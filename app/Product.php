@@ -9,8 +9,8 @@ class Product extends Model
     /*
      * Constante de estados
      */
-    const PRODUCT_AVAILABLE = 1;
-    const PRODUCT_NOT_AVAILABLE = 0;
+    const PRODUCT_AVAILABLE = '1';
+    const PRODUCT_NOT_AVAILABLE = '0';
 
     protected $fillable = [
         'name',
@@ -23,5 +23,20 @@ class Product extends Model
     public function isAvailable()
     {
         return $this->state == self::PRODUCT_AVAILABLE;
+    }
+
+    public function seller()
+    {
+        return $this->belongsTo(Seller::class);
+    }
+
+    public function transaction()
+    {
+        return $this->hasMany(Transaction::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsToMany(Category::class);
     }
 }
