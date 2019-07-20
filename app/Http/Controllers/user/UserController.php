@@ -5,6 +5,7 @@ namespace App\Http\Controllers\user;
 use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\User;
+use Exception;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Response;
@@ -127,7 +128,7 @@ class UserController extends Controller
      *
      * @param User $user
      * @return void
-     * @throws \Exception
+     * @throws Exception
      */
     public function destroy(User $user)
     {
