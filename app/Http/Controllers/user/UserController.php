@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\user;
 
+use App\Http\Controllers\ApiController;
 use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\User;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Response;
 
-class UserController extends Controller
+class UserController extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -21,11 +22,7 @@ class UserController extends Controller
     {
         $users = User::all();
 
-        return response(
-            [
-                'data' => $users
-            ], 200
-        );
+        return $this->showAll($users);
     }
 
     /**
@@ -56,15 +53,11 @@ class UserController extends Controller
      * Display the specified resource.
      *
      * @param User $user
-     * @return void
+     * @return JsonResponse
      */
     public function show(User $user)
     {
-        return response(
-            [
-                'data' => $user
-            ], 200
-        );
+        return $this->showOne($user);
     }
 
     /**
@@ -92,35 +85,19 @@ class UserController extends Controller
 
         if ($request->has('admin')) {
             if (!$user->isVerified()) {
-                return response(
-                    [
-                        'error' => 'Unicamente los usuarios verificados pueden ser administradores',
-                        'code' => 409,
-                    ],
-                    409
-                );
+                return $this->errorResponse('Unicamente los usuarios verificados pueden ser administradores', 409);
             }
             $user->admin = $request->admin;
         }
 
         if (!$user->isDirty()) {
-            return response(
-                [
-                    'error' => 'Se debe especificar al menos un valor diferente para actualizar',
-                    'code' => 422,
-                ],
-                422
-            );
+            return $this->errorResponse('Unicamente los usuarios verificados pueden ser administradores', 422);
+
         }
 
         $user->save();
 
-        return response(
-            [
-                'data' => $user,
-                'message' => 'El usuario se ha actualizado con éxito',
-            ], 200
-        );
+        return $this->showOne($user, "El usuario $user->name se ha modificado con éxito");
     }
 
     /**
@@ -134,11 +111,6 @@ class UserController extends Controller
     {
         $user->delete();
 
-        return response(
-            [
-                'data' => $user,
-                'message' => "El usuario $user->name se ha eliminado con éxito",
-            ], 200
-        );
+        return $this->showOne($user, "El usuario $user->name se ha eliminado con éxito");
     }
 }
