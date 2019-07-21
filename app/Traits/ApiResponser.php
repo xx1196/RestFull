@@ -15,7 +15,7 @@ trait ApiResponser
         );
     }
 
-    protected function errorResponse($message, $code)
+    protected function errorResponse($message, $code = 500)
     {
         return response()->json(
             [

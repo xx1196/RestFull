@@ -87,6 +87,10 @@ class Handler extends ExceptionHandler
             if ($code === 1451)
                 return $this->errorResponse('Este recurso ya esta relacionado con otros', 409);
         }
+
+        if (!config('app.debug'))
+            return $this->errorResponse('No eres tu somos nosotros, disculpa las molestias generadas estamos trabajando para arreglarlo');
+
         return parent::render($request, $exception);
     }
 
