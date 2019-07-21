@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use App\Traits\ApiResponser;
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -48,13 +49,17 @@ class Handler extends ExceptionHandler
      *
      * @param Request $request
      * @param Exception $exception
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function render($request, Exception $exception)
     {
         if ($exception instanceof ValidationException)
-            $this->convertValidationExceptionToResponse($exception, $request);
+            return $this->convertValidationExceptionToResponse($exception, $request);
 
+        if ($exception instanceof ModelNotFoundException){
+            $model = strtolower(class_basename($exception->getModel()));
+            return $this->errorResponse("No existe resultados de {$model}", 404);
+        }
         return parent::render($request, $exception);
     }
 
