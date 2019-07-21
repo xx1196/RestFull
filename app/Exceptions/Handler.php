@@ -11,6 +11,7 @@ use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Handler extends ExceptionHandler
@@ -72,6 +73,9 @@ class Handler extends ExceptionHandler
 
         if ($exception instanceof AuthorizationException)
             return $this->errorResponse('No posee permisos para esta acción', 403);
+
+        if ($exception instanceof MethodNotAllowedHttpException)
+            return $this->errorResponse('No es valido este verbo HTTP para esta ruta', 405);
 
         return parent::render($request, $exception);
     }
