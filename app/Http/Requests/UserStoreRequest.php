@@ -40,6 +40,7 @@ class UserStoreRequest extends FormRequest
             'email.unique'=> 'Este email ya se encuentra asignado',
             'password.required'=> 'El campo password tiene que ser ingresado',
             'password.min'=> 'El campo password tiene que miínimo de 6 caracteres',
+            'password.confirmed'=> 'Las contraseñas no coinciden',
         ];
     }
 }
