@@ -11,6 +11,7 @@ use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -62,6 +63,9 @@ class Handler extends ExceptionHandler
             $model = strtolower(class_basename($exception->getModel()));
             return $this->errorResponse("No existe resultados de {$model}", 404);
         }
+
+        if ($exception instanceof NotFoundHttpException)
+            return $this->errorResponse("No existe la ruta especificada", 404);
 
         if ($exception instanceof AuthenticationException)
             return $this->unauthenticated($request, $exception);
