@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use App\Traits\ApiResponser;
 use Exception;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Request;
@@ -56,10 +57,14 @@ class Handler extends ExceptionHandler
         if ($exception instanceof ValidationException)
             return $this->convertValidationExceptionToResponse($exception, $request);
 
-        if ($exception instanceof ModelNotFoundException){
+        if ($exception instanceof ModelNotFoundException) {
             $model = strtolower(class_basename($exception->getModel()));
             return $this->errorResponse("No existe resultados de {$model}", 404);
         }
+
+        if ($exception instanceof AuthenticationException)
+            return $this->unauthenticated($request, $exception);
+
         return parent::render($request, $exception);
     }
 
@@ -73,6 +78,18 @@ class Handler extends ExceptionHandler
     protected function convertValidationExceptionToResponse(ValidationException $e, $request)
     {
         return $this->errorResponse($e->validator->errors()->getMessages(), 422);
+    }
+
+    /**
+     * Convert an authentication exception into a response.
+     *
+     * @param Request $request
+     * @param AuthenticationException $exception
+     * @return Response
+     */
+    protected function unauthenticated($request, AuthenticationException $exception)
+    {
+        return $this->errorResponse('No te encuentras logeado en nuestro sistema', 401);
     }
 
 }
