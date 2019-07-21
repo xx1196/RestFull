@@ -7,6 +7,7 @@ use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -81,6 +82,11 @@ class Handler extends ExceptionHandler
         if ($exception instanceof HttpException)
             return $this->errorResponse($exception->getMessage(), $exception->getCode());
 
+        if ($exception instanceof QueryException) {
+            $code = $exception->errorInfo[1];
+            if ($code === 1451)
+                return $this->errorResponse('Este recurso ya esta relacionado con otros', 409);
+        }
         return parent::render($request, $exception);
     }
 
