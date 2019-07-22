@@ -3,9 +3,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
 {
+    use SoftDeletes;
     /*
      * Constante de estados
      */
@@ -18,6 +20,10 @@ class Product extends Model
         'quantity',
         'status',
         'seller_id',
+    ];
+
+    protected $dates = [
+        'deleted_at'
     ];
 
     public function isAvailable()
