@@ -45,7 +45,7 @@ class UserController extends ApiController
             [
                 'data' => $user,
                 'message' => "El usuario $user->name se ha creado con éxito",
-            ], 200
+            ], 201
         );
     }
 
