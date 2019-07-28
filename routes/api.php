@@ -43,6 +43,12 @@ Route::resource('transactions.categories', 'transaction\TransactionCategoryContr
     ]
 );
 
+Route::resource('transactions.sellers', 'transaction\TransactionSellerController',
+    [
+        'only' => ['index']
+    ]
+);
+
 Route::resource('sellers', 'seller\SellerController',
     [
         'only' => ['index', 'show']
