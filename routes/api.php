@@ -19,6 +19,30 @@ Route::resource('buyers', 'buyer\BuyerController',
     ]
 );
 
+Route::resource('buyers.transactions', 'buyer\BuyerTransactionController',
+    [
+        'only' => ['index']
+    ]
+);
+
+Route::resource('buyers.products', 'buyer\BuyerProductController',
+    [
+        'only' => ['index']
+    ]
+);
+
+Route::resource('buyers.sellers', 'buyer\BuyerSellerController',
+    [
+        'only' => ['index']
+    ]
+);
+
+Route::resource('buyers.categories', 'buyer\BuyerCategoryController',
+    [
+        'only' => ['index']
+    ]
+);
+
 Route::resource('categories', 'category\CategoryController',
     [
         'except' => ['create', 'edit']
