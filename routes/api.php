@@ -49,6 +49,30 @@ Route::resource('categories', 'category\CategoryController',
     ]
 );
 
+Route::resource('categories.products', 'category\CategoryProductController',
+    [
+        'only' => ['index']
+    ]
+);
+
+Route::resource('categories.sellers', 'category\CategorySellerController',
+    [
+        'only' => ['index']
+    ]
+);
+
+Route::resource('categories.transactions', 'category\CategoryTransactionController',
+    [
+        'only' => ['index']
+    ]
+);
+
+Route::resource('categories.buyers', 'category\CategoryBuyerController',
+    [
+        'only' => ['index']
+    ]
+);
+
 Route::resource('products', 'product\ProductController',
     [
         'only' => ['index', 'show']

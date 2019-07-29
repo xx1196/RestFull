@@ -26,6 +26,10 @@ class Product extends Model
         'deleted_at'
     ];
 
+    protected $hidden = [
+        'pivot'
+    ];
+
     public function isAvailable()
     {
         return $this->state == self::PRODUCT_AVAILABLE;
@@ -36,7 +40,7 @@ class Product extends Model
         return $this->belongsTo(Seller::class);
     }
 
-    public function transaction()
+    public function transactions()
     {
         return $this->hasMany(Transaction::class);
     }

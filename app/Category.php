@@ -18,7 +18,11 @@ class Category extends Model
         'deleted_at'
     ];
 
-    public function product()
+    protected $hidden = [
+        'pivot'
+    ];
+
+    public function products()
     {
         return $this->belongsToMany(Product::class);
     }
