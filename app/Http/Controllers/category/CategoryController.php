@@ -6,6 +6,7 @@ use App\Category;
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\CategoryStoreRequest;
 use App\Http\Requests\CategoryUpdateRequest;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -81,6 +82,7 @@ class CategoryController extends ApiController
      *
      * @param Category $category
      * @return void
+     * @throws Exception
      */
     public function destroy(Category $category)
     {

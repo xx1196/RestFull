@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 |
 */
 Route::group(['middleware' => 'cors'], function () {
+
     Route::resource('buyers', 'buyer\BuyerController',
         [
             'only' => ['index', 'show']
@@ -100,6 +101,30 @@ Route::group(['middleware' => 'cors'], function () {
     Route::resource('sellers', 'seller\SellerController',
         [
             'only' => ['index', 'show']
+        ]
+    );
+
+    Route::resource('sellers.transactions', 'seller\SellerTransactionController',
+        [
+            'only' => ['index']
+        ]
+    );
+
+    Route::resource('sellers.categories', 'seller\SellerCategoryController',
+        [
+            'only' => ['index']
+        ]
+    );
+
+    Route::resource('sellers.buyers', 'seller\SellerBuyerController',
+        [
+            'only' => ['index']
+        ]
+    );
+
+    Route::resource('sellers.products', 'seller\SellerProductController',
+        [
+            'exept' => ['create', 'show', 'edit']
         ]
     );
 

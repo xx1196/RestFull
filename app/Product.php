@@ -19,6 +19,7 @@ class Product extends Model
         'description',
         'quantity',
         'status',
+        'image',
         'seller_id',
     ];
 
@@ -32,7 +33,7 @@ class Product extends Model
 
     public function isAvailable()
     {
-        return $this->state == self::PRODUCT_AVAILABLE;
+        return $this->status == self::PRODUCT_AVAILABLE;
     }
 
     public function seller()
