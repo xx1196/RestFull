@@ -91,8 +91,7 @@ class UserController extends ApiController
         }
 
         if (!$user->isDirty()) {
-            return $this->errorResponse('Unicamente los usuarios verificados pueden ser administradores', 422);
-
+            return $this->errorResponse("No se encuentra cambios para el usuario $user->name", 422);
         }
 
         $user->save();
@@ -109,8 +108,29 @@ class UserController extends ApiController
      */
     public function destroy(User $user)
     {
+        $user->forceDelete();
+
+        return $this->showOne($user, "El usuario $user->name se ha eliminado de forma permanente con éxito");
+    }
+
+    public function deactivate(User $user)
+    {
         $user->delete();
 
-        return $this->showOne($user, "El usuario $user->name se ha eliminado con éxito");
+        return $this->showOne($user, "El usuario $user->name se ha desactivado con éxito");
+    }
+
+    public function deactivatedUsers()
+    {
+        $users = User::onlyTrashed()->get();
+
+        return $this->showAll($users);
+    }
+
+    public function activated(User $user)
+    {
+        $user->restore();
+
+        return $this->showOne($user, "El usuario $user->name se ha activado con éxito");
     }
 }

@@ -9,6 +9,10 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
+/**
+ * @method delete()
+ * @method forceDelete()
+ */
 class User extends Authenticatable
 {
     use Notifiable, SoftDeletes;
