@@ -79,6 +79,24 @@ Route::resource('products', 'product\ProductController',
     ]
 );
 
+Route::resource('products.transactions', 'product\ProductTransactionController',
+    [
+        'only' => ['index']
+    ]
+);
+
+Route::resource('products.buyers', 'product\ProductBuyerController',
+    [
+        'only' => ['index']
+    ]
+);
+
+Route::resource('products.categories', 'product\ProductCategoryController',
+    [
+        'only' => ['index', 'update', 'destroy']
+    ]
+);
+
 Route::resource('transactions', 'transaction\TransactionController',
     [
         'only' => ['index', 'show']
