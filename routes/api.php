@@ -12,125 +12,123 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::group(['middleware' => 'cors'], function () {
 
-    Route::resource('buyers', 'buyer\BuyerController',
-        [
-            'only' => ['index', 'show']
-        ]
-    );
+Route::resource('buyers', 'buyer\BuyerController',
+    [
+        'only' => ['index', 'show']
+    ]
+);
 
-    Route::resource('buyers.transactions', 'buyer\BuyerTransactionController',
-        [
-            'only' => ['index']
-        ]
-    );
+Route::resource('buyers.transactions', 'buyer\BuyerTransactionController',
+    [
+        'only' => ['index']
+    ]
+);
 
-    Route::resource('buyers.products', 'buyer\BuyerProductController',
-        [
-            'only' => ['index']
-        ]
-    );
+Route::resource('buyers.products', 'buyer\BuyerProductController',
+    [
+        'only' => ['index']
+    ]
+);
 
-    Route::resource('buyers.sellers', 'buyer\BuyerSellerController',
-        [
-            'only' => ['index']
-        ]
-    );
+Route::resource('buyers.sellers', 'buyer\BuyerSellerController',
+    [
+        'only' => ['index']
+    ]
+);
 
-    Route::resource('buyers.categories', 'buyer\BuyerCategoryController',
-        [
-            'only' => ['index']
-        ]
-    );
+Route::resource('buyers.categories', 'buyer\BuyerCategoryController',
+    [
+        'only' => ['index']
+    ]
+);
 
-    Route::resource('categories', 'category\CategoryController',
-        [
-            'except' => ['create', 'edit']
-        ]
-    );
+Route::resource('categories', 'category\CategoryController',
+    [
+        'except' => ['create', 'edit']
+    ]
+);
 
-    Route::resource('categories.products', 'category\CategoryProductController',
-        [
-            'only' => ['index']
-        ]
-    );
+Route::resource('categories.products', 'category\CategoryProductController',
+    [
+        'only' => ['index']
+    ]
+);
 
-    Route::resource('categories.sellers', 'category\CategorySellerController',
-        [
-            'only' => ['index']
-        ]
-    );
+Route::resource('categories.sellers', 'category\CategorySellerController',
+    [
+        'only' => ['index']
+    ]
+);
 
-    Route::resource('categories.transactions', 'category\CategoryTransactionController',
-        [
-            'only' => ['index']
-        ]
-    );
+Route::resource('categories.transactions', 'category\CategoryTransactionController',
+    [
+        'only' => ['index']
+    ]
+);
 
-    Route::resource('categories.buyers', 'category\CategoryBuyerController',
-        [
-            'only' => ['index']
-        ]
-    );
+Route::resource('categories.buyers', 'category\CategoryBuyerController',
+    [
+        'only' => ['index']
+    ]
+);
 
-    Route::resource('products', 'product\ProductController',
-        [
-            'only' => ['index', 'show']
-        ]
-    );
+Route::resource('products', 'product\ProductController',
+    [
+        'only' => ['index', 'show']
+    ]
+);
 
-    Route::resource('transactions', 'transaction\TransactionController',
-        [
-            'only' => ['index', 'show']
-        ]
-    );
+Route::resource('transactions', 'transaction\TransactionController',
+    [
+        'only' => ['index', 'show']
+    ]
+);
 
-    Route::resource('transactions.categories', 'transaction\TransactionCategoryController',
-        [
-            'only' => ['index']
-        ]
-    );
+Route::resource('transactions.categories', 'transaction\TransactionCategoryController',
+    [
+        'only' => ['index']
+    ]
+);
 
-    Route::resource('transactions.sellers', 'transaction\TransactionSellerController',
-        [
-            'only' => ['index']
-        ]
-    );
+Route::resource('transactions.sellers', 'transaction\TransactionSellerController',
+    [
+        'only' => ['index']
+    ]
+);
 
-    Route::resource('sellers', 'seller\SellerController',
-        [
-            'only' => ['index', 'show']
-        ]
-    );
+Route::resource('sellers', 'seller\SellerController',
+    [
+        'only' => ['index', 'show']
+    ]
+);
 
-    Route::resource('sellers.transactions', 'seller\SellerTransactionController',
-        [
-            'only' => ['index']
-        ]
-    );
+Route::resource('sellers.transactions', 'seller\SellerTransactionController',
+    [
+        'only' => ['index']
+    ]
+);
 
-    Route::resource('sellers.categories', 'seller\SellerCategoryController',
-        [
-            'only' => ['index']
-        ]
-    );
+Route::resource('sellers.categories', 'seller\SellerCategoryController',
+    [
+        'only' => ['index']
+    ]
+);
 
-    Route::resource('sellers.buyers', 'seller\SellerBuyerController',
-        [
-            'only' => ['index']
-        ]
-    );
+Route::resource('sellers.buyers', 'seller\SellerBuyerController',
+    [
+        'only' => ['index']
+    ]
+);
 
-    Route::resource('sellers.products', 'seller\SellerProductController',
-        [
-            'exept' => ['create', 'show', 'edit']
-        ]
-    );
+Route::resource('sellers.products', 'seller\SellerProductController',
+    [
+        'exept' => ['create', 'show', 'edit']
+    ]
+);
 
-    Route::resource('users', 'user\UserController',
-        [
-            'except' => ['create', 'edit']
-        ]
-    );
-});
+Route::resource('users', 'user\UserController',
+    [
+        'except' => ['create', 'edit']
+    ]
+);
