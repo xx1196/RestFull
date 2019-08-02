@@ -134,3 +134,5 @@ Route::resource('users', 'user\UserController',
 );
 
 Route::delete('users/deactivate/{user}', 'user\UserController@deactivate');
+Route::delete('users/activated/{user}', 'user\UserController@activated');
+Route::get('users/deactivatedUsers', 'user\UserController@deactivatedUsers');
