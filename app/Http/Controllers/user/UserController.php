@@ -108,8 +108,15 @@ class UserController extends ApiController
      */
     public function destroy(User $user)
     {
+        $user->forceDelete();
+
+        return $this->showOne($user, "El usuario $user->name se ha eliminado de forma permanente con éxito");
+    }
+
+    public function deactivate(User $user)
+    {
         $user->delete();
 
-        return $this->showOne($user, "El usuario $user->name se ha eliminado con éxito");
+        return $this->showOne($user, "El usuario $user->name se ha desactivado con éxito");
     }
 }

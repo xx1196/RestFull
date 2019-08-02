@@ -132,3 +132,5 @@ Route::resource('users', 'user\UserController',
         'except' => ['create', 'edit']
     ]
 );
+
+Route::delete('users/deactivate/{user}', 'user\UserController@deactivate');
