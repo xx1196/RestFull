@@ -91,8 +91,7 @@ class UserController extends ApiController
         }
 
         if (!$user->isDirty()) {
-            return $this->errorResponse('Unicamente los usuarios verificados pueden ser administradores', 422);
-
+            return $this->errorResponse("No se encuentra cambios para el usuario $user->name", 422);
         }
 
         $user->save();
