@@ -119,4 +119,18 @@ class UserController extends ApiController
 
         return $this->showOne($user, "El usuario $user->name se ha desactivado con éxito");
     }
+
+    public function deactivatedUsers()
+    {
+        $users = User::onlyTrashed()->get();
+
+        return $this->showAll($users);
+    }
+
+    public function activated(User $user)
+    {
+        $user->restore();
+
+        return $this->showOne($user, "El usuario $user->name se ha activado con éxito");
+    }
 }
