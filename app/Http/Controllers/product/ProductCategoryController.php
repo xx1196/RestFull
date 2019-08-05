@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\product;
 
+use App\Category;
 use App\Http\Controllers\ApiController;
 use App\Product;
 use Illuminate\Http\Request;
@@ -25,13 +26,15 @@ class ProductCategoryController extends ApiController
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
      * @param Product $product
+     * @param Category $category
      * @return Response
      */
-    public function update(Request $request, Product $product)
+    public function update(Product $product, Category $category)
     {
-        //
+        $product->categories()->syncWithoutDetaching([$category->id]);
+
+        return $this->showAll($product->categories);
     }
 
     /**
@@ -40,8 +43,12 @@ class ProductCategoryController extends ApiController
      * @param Product $product
      * @return Response
      */
-    public function destroy(Product $product)
+    public function destroy(Product $product, Category $category)
     {
-        //
+        if (!$product->categories()->find($category->id)) {
+            return $this->errorResponse("La categoria $category->name no pertenece al producto $product->name", 404);
+        }
+        $product->categories()->detach([$category->id]);
+        return $this->showAll($product->categories);
     }
 }

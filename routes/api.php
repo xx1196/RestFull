@@ -97,6 +97,12 @@ Route::resource('products.categories', 'product\ProductCategoryController',
     ]
 );
 
+Route::resource('products.buyers.transactions', 'product\ProductBuyerTransactionController',
+    [
+        'only' => ['store']
+    ]
+);
+
 Route::resource('transactions', 'transaction\TransactionController',
     [
         'only' => ['index', 'show']
