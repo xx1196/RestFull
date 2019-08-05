@@ -64,7 +64,7 @@ class Handler extends ExceptionHandler
 
         if ($exception instanceof ModelNotFoundException) {
             $model = strtolower(class_basename($exception->getModel()));
-            return $this->errorResponse("No existe resultados de {$model}", 404);
+            return $this->errorResponse("No existe resultados de $model", 404);
         }
 
         if ($exception instanceof NotFoundHttpException)

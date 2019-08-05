@@ -22,7 +22,11 @@ class UserController extends ApiController
     {
         $users = User::all();
 
-        return $this->showAll($users);
+        if ($users->count()) {
+            return $this->showAll($users);
+        } else {
+            return $this->showNone();
+        }
     }
 
     /**
@@ -106,13 +110,24 @@ class UserController extends ApiController
      * @return void
      * @throws Exception
      */
-    public function destroy(User $user)
+    public function destroy($user)
     {
+        $user = User::withTrashed()
+            ->whereId($user)
+            ->first();
+
         $user->forceDelete();
 
         return $this->showOne($user, "El usuario $user->name se ha eliminado de forma permanente con éxito");
     }
 
+    /**
+     * deactivated the specified resource from storage.
+     *
+     * @param User $user
+     * @return void
+     * @throws Exception
+     */
     public function deactivated(User $user)
     {
         $user->delete();
@@ -120,15 +135,35 @@ class UserController extends ApiController
         return $this->showOne($user, "El usuario $user->name se ha desactivado con éxito");
     }
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return User[]
+     */
     public function deactivatedUsers()
     {
         $users = User::onlyTrashed()->get();
 
-        return $this->showAll($users);
+        if ($users->count()) {
+            return $this->showAll($users);
+        } else {
+            return $this->showNone();
+        }
     }
 
-    public function activated(User $user)
+    /**
+     * activated the specified resource from storage.
+     *
+     * @param User $user
+     * @return void
+     * @throws Exception
+     */
+    public function activated($user)
     {
+        $user = User::onlyTrashed()
+            ->whereId($user)
+            ->first();
+
         $user->restore();
 
         return $this->showOne($user, "El usuario $user->name se ha activado con éxito");
