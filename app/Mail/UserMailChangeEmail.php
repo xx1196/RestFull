@@ -13,10 +13,11 @@ class UserMailChangeEmail extends Mailable
     use Queueable, SerializesModels;
 
     public $user;
+
     /**
      * Create a new message instance.
      *
-     * @return void
+     * @param User $user
      */
     public function __construct(User $user)
     {
@@ -30,6 +31,6 @@ class UserMailChangeEmail extends Mailable
      */
     public function build()
     {
-        return $this->text('emails.confirm')->subject("Por favor confirma tu nuevo correo electronico");
+        return $this->view('emails.confirm')->subject("Por favor confirma tu nuevo correo electronico");
     }
 }
