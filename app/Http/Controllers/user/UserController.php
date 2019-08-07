@@ -5,11 +5,13 @@ namespace App\Http\Controllers\user;
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\UserUpdateRequest;
+use App\Mail\UserCreatedMail;
 use App\User;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Mail;
 
 class UserController extends ApiController
 {
@@ -39,8 +41,9 @@ class UserController extends ApiController
     {
         $fields = $request->all();
         $fields['verified'] = User::USER_NOT_VERIFIED;
-        $fields['verification_token'] = User::generateVerifiedToken();
+        $fields['verified_token'] = User::generateVerifiedToken();
         $fields['admin'] = User::USER_REGULAR;
+
         $user = User::create(
             $fields
         );
@@ -69,7 +72,7 @@ class UserController extends ApiController
      *
      * @param UserUpdateRequest $request
      * @param User $user
-     * @return void
+     * @return JsonResponse
      */
     public function update(UserUpdateRequest $request, User $user)
     {
@@ -79,7 +82,7 @@ class UserController extends ApiController
 
         if ($request->has('email') && $user->email != $request->email) {
             $user->verified = User::USER_NOT_VERIFIED;
-            $user->verification_token = User::generateVerifiedToken();
+            $user->verified_token = User::generateVerifiedToken();
             $user->email = $request->email;
         }
 
@@ -107,7 +110,7 @@ class UserController extends ApiController
      * Remove the specified resource from storage.
      *
      * @param User $user
-     * @return void
+     * @return JsonResponse
      * @throws Exception
      */
     public function destroy($user)
@@ -125,7 +128,7 @@ class UserController extends ApiController
      * deactivated the specified resource from storage.
      *
      * @param User $user
-     * @return void
+     * @return JsonResponse
      * @throws Exception
      */
     public function deactivated(User $user)
@@ -155,7 +158,7 @@ class UserController extends ApiController
      * activated the specified resource from storage.
      *
      * @param User $user
-     * @return void
+     * @return JsonResponse
      * @throws Exception
      */
     public function activated($user)
@@ -167,5 +170,44 @@ class UserController extends ApiController
         $user->restore();
 
         return $this->showOne($user, "El usuario $user->name se ha activado con éxito");
+    }
+
+    /**
+     *
+     * change the verified value of a user who coins with his token.
+     *
+     * @param $token
+     * @return JsonResponse
+     */
+    public function verify($token)
+    {
+        $user = User::whereVerifiedToken($token)->firstOrFail();
+        $user->verified = User::USER_VERIFIED;
+        $user->verified_token = null;
+        $user->save();
+
+        return $this->showMessage("La cuenta ha sido verificada");
+    }
+
+    /**
+     *
+     * resend the verification email.
+     *
+     * @param User $user
+     * @return JsonResponse
+     * @throws Exception
+     */
+    public function resend(User $user)
+    {
+        if ($user->isVerified())
+            return $this->errorResponse("el usuario $user->name ya está verificado", 409);
+
+        retry(5, function () use ($user) {
+            Mail::to($user)->send(new UserCreatedMail($user));
+        },
+            100
+        );
+
+        return $this->showMessage("EL correo de verificación se ha reenviado");
     }
 }

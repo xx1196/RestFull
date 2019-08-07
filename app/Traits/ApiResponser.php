@@ -47,7 +47,16 @@ trait ApiResponser
         );
     }
 
-    protected function showNone($message = 'No se encontraron resultados', $code = 200)
+    protected function showNone()
+    {
+        return $this->successResponse([
+            'message' => 'No se encontraron resultados',
+        ],
+            404
+        );
+    }
+
+    protected function showMessage($message = 'Carga con éxito', $code = 200)
     {
         return $this->successResponse([
             'message' => $message,
@@ -55,4 +64,5 @@ trait ApiResponser
             $code
         );
     }
+
 }

@@ -158,5 +158,10 @@ Route::resource('users', 'user\UserController',
 );
 
 Route::delete('users/deactivated/{user}', 'user\UserController@deactivated');
+
 Route::delete('users/activated/{user}', 'user\UserController@activated');
+
 Route::get('deactivatedUsers', 'user\UserController@deactivatedUsers');
+
+Route::get('users/verify/{token}', 'user\UserController@verify')->name('verify');
+Route::get('users/{user}/resend', 'user\UserController@resend')->name('resend');
