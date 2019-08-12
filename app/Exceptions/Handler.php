@@ -10,7 +10,9 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Request;
+use Illuminate\Session\TokenMismatchException;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\Debug\Exception\FatalThrowableError;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
@@ -88,6 +90,9 @@ class Handler extends ExceptionHandler
                 return $this->errorResponse('Este recurso ya esta relacionado con otros', 409);
         }
 
+        if ($exception instanceof TokenMismatchException || $exception instanceof FatalThrowableError)
+            return redirect()->back()->withInput($request->input());
+
         if (!config('app.debug'))
             return $this->errorResponse('No eres tu somos nosotros, disculpa las molestias generadas estamos trabajando para arreglarlo');
 
@@ -103,7 +108,13 @@ class Handler extends ExceptionHandler
      */
     protected function convertValidationExceptionToResponse(ValidationException $e, $request)
     {
-        return $this->errorResponse($e->validator->errors()->getMessages(), 422);
+        $errors = $e->validator->errors()->getMessages();
+
+        if ($this->isFrontend($request)) {
+           return $request->ajax() ? response()->json($errors, 422) : redirect()->back()->withInput($request->input())->withErrors($errors);
+        }
+
+        return $this->errorResponse($errors, 422);
     }
 
     /**
@@ -115,7 +126,14 @@ class Handler extends ExceptionHandler
      */
     protected function unauthenticated($request, AuthenticationException $exception)
     {
+        if ($this->isFrontend($request))
+            return redirect()->guest('login');
+
         return $this->errorResponse('No te encuentras logeado en nuestro sistema', 401);
     }
 
+    private function isFrontend(Request $request)
+    {
+        return $request->acceptsHtml() && collect($request->route()->middleware())->contains('web');
+    }
 }
