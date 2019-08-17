@@ -12,6 +12,26 @@ use Illuminate\Http\Response;
 
 class CategoryController extends ApiController
 {
+
+    public function __construct()
+    {
+        $this->middleware('client.credential')
+            ->only(
+                [
+                    'index',
+                    'show',
+                ]
+            );
+
+        $this->middleware('auth:api')
+            ->except(
+                [
+                    'index',
+                    'show',
+                ]
+            );
+    }
+
     /**
      * Display a listing of the resource.
      *

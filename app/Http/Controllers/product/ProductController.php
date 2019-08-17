@@ -7,6 +7,18 @@ use App\Product;
 
 class ProductController extends ApiController
 {
+
+    public function __construct()
+    {
+        $this->middleware('client.credential')
+            ->only(
+                [
+                    'index',
+                    'show',
+                ]
+            );
+    }
+
     /**
      * Display a listing of the resource.
      *

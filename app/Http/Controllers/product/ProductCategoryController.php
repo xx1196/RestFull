@@ -10,6 +10,24 @@ use Illuminate\Http\Response;
 
 class ProductCategoryController extends ApiController
 {
+
+    public function __construct()
+    {
+        $this->middleware('client.credential')
+            ->only(
+                [
+                    'index',
+                ]
+            );
+
+        $this->middleware('auth:api')
+            ->except(
+                [
+                    'index',
+                ]
+            );
+    }
+
     /**
      * Display a listing of the resource.
      *

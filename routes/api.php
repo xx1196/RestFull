@@ -165,3 +165,5 @@ Route::get('deactivatedUsers', 'user\UserController@deactivatedUsers');
 
 Route::get('users/verify/{token}', 'user\UserController@verify')->name('verify');
 Route::get('users/{user}/resend', 'user\UserController@resend')->name('resend');
+
+Route::post('oauth/token', '\Laravel\Passport\Http\Controllers\AccessTokenController@issueToken');

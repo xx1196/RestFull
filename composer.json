@@ -14,6 +14,7 @@
         "guzzlehttp/guzzle": "^6.3",
         "laravel/framework": "5.8.*",
         "laravel/homestead": "^8.6",
+        "laravel/passport": "^7.3",
         "laravel/tinker": "^1.0"
     },
     "require-dev": {
